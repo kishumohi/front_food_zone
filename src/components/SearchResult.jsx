@@ -5,14 +5,14 @@ function SearchResult({ data }) {
     <FoodCartContainer>
       <FoodCards>
         {data?.map((food) => (
-          <FoodCart key={food.id}>
+          <FoodCart key={food.idCategory}>
             <div className="food_image">
-              <img src={food.url} width={133} height={133} />
+              <img src={food.strCategoryThumb} width={133} height={133} />
             </div>
             <div className="food_info">
               <div className="info">
-                <h3>{food.id}</h3>
-                <p>{food.title}</p>
+                <h3>{food.strCategory}</h3>
+                <p>{food.strCategoryDescription.slice(0, 150)}</p>
               </div>
               <button>click To Buy</button>
             </div>
@@ -85,7 +85,7 @@ const FoodCart = styled.div`
     }
     p {
       margin-top: 4px;
-      font-size: 12px;
+      font-size: 14px;
     }
     button {
       font-size: 12px;

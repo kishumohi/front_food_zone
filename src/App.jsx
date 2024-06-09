@@ -6,16 +6,19 @@ function App() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [filteredData, setFilteredData] = useState(null);
+  // console.log(filteredData);
+  const BASE_URL = "https://www.themealdb.com/api/json/v1/1/categories.php";
   useEffect(() => {
     const fetchfoodData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/photos"
-        );
+        const response = await fetch(BASE_URL);
         const fooddata = await response.json();
-        console.log(fooddata);
-        setData(fooddata);
+        const finalFood = await fooddata.categories?.slice(0, 6);
+        // console.log(finalFood);
+        setData(finalFood);
+        setFilteredData(finalFood);
         setLoading(false);
       } catch (error) {
         setError("Unable to fetch Data");
@@ -25,25 +28,39 @@ function App() {
     fetchfoodData();
   }, []);
 
+  // Filter Function
+  const searchFood = (e) => {
+    const searchValue = e.target.value;
+    if (searchValue === "") {
+      setFilteredData(null);
+    }
+    const filter = data?.filter((food) =>
+      food.strCategory.toLowerCase().includes(searchValue.toLowerCase())
+    );
+    setFilteredData(filter);
+  };
+
   if (error) return <div>{error}</div>;
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <TopContainer>
-        <img src="Foody Zone.svg" alt="logo" />
-        <input type="text" placeholder="Search" />
-      </TopContainer>
-      <FilterContainer>
-        <div>
-          <button>All</button>
-          <button>Breackfast</button>
-          <button>Lunch</button>
-          <button>Dinner</button>
-        </div>
-      </FilterContainer>
-      <SearchResult data={data} />
-    </div>
+    <>
+      <div>
+        <TopContainer>
+          <img src="Foody Zone.svg" alt="logo" />
+          <input type="text" placeholder="Search" onChange={searchFood} />
+        </TopContainer>
+        <FilterContainer>
+          <div>
+            <button>All</button>
+            <button>Breackfast</button>
+            <button>Lunch</button>
+            <button>Dinner</button>
+          </div>
+        </FilterContainer>
+      </div>
+      <SearchResult data={filteredData} />
+    </>
   );
 }
 
