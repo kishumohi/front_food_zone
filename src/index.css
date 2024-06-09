@@ -1,0 +1,18 @@
+:root {
+  * {
+    /* 
+    for full body zero
+    Give Size For Full app also    
+    */
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}
+
+body {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: "Inter", "sans-serif";
+}
